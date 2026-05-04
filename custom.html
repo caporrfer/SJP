@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Personalización — SJP Strength Generation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/styles.css?v=20260504d"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+.custom-hero {
+  background: var(--ink); color: var(--paper);
+  padding: 96px 0 88px;
+}
+.custom-hero h1 {
+  font-size: clamp(52px, 9vw, 128px);
+  font-weight: 800; line-height: 0.9;
+  letter-spacing: -0.02em; text-transform: uppercase;
+}
+.custom-hero h1 .stroke { color: transparent; -webkit-text-stroke: 1.5px var(--paper); }
+.custom-hero h1 .red { color: var(--red); }
+.custom-hero p {
+  font-size: 18px; line-height: 1.55; margin-top: 32px;
+  color: var(--steel-dim); max-width: 56ch;
+}
+
+.process {
+  padding: clamp(80px, 10vw, 140px) 0;
+}
+.process-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: start;
+}
+.process-grid h2 {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800; line-height: 1;
+  letter-spacing: -0.015em; text-transform: uppercase;
+}
+.process-steps { display: flex; flex-direction: column; }
+.step {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 28px;
+  padding: 28px 0;
+  border-top: 1px solid var(--steel-line);
+}
+.step:last-child { border-bottom: 1px solid var(--steel-line); }
+.step .n {
+  font-family: var(--f-mono);
+  font-size: 11px; letter-spacing: 0.14em;
+  color: var(--red); padding-top: 4px;
+}
+.step h3 {
+  font-size: 22px; font-weight: 700; line-height: 1.1;
+  letter-spacing: -0.005em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.step p { font-size: 14px; line-height: 1.55; color: var(--ink-2); max-width: 46ch; }
+@media (max-width: 900px) { .process-grid { grid-template-columns: 1fr; gap: 40px; } }
+@media (max-width: 520px) {
+  .custom-hero { padding: 72px 0 56px; }
+  .custom-hero,
+  .process,
+  .form-section {
+    text-align: center;
+  }
+  .custom-hero p {
+    font-size: 15px;
+    max-width: none;
+    width: 100%;
+  }
+  .step { grid-template-columns: 1fr; gap: 10px; padding: 22px 0; }
+  .step h3 { font-size: 18px; }
+  .step p {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: none;
+    width: 100%;
+  }
+}
+
+.form-section {
+  background: var(--ink); color: var(--paper);
+  padding: clamp(80px, 10vw, 140px) 0;
+}
+.form-section h2 {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800; line-height: 1;
+  letter-spacing: -0.015em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.form-section h2 .red { color: var(--red); }
+.form-section .lead {
+  font-size: 17px; color: var(--steel-dim);
+  max-width: 52ch; margin-bottom: 48px;
+}
+.request-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.request-form .field.full { grid-column: 1 / -1; }
+.request-form .field label { color: var(--steel); }
+.request-form .field input,
+.request-form .field textarea,
+.request-form .field select {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.12);
+  color: var(--paper);
+}
+.request-form .field input:focus,
+.request-form .field textarea:focus,
+.request-form .field select:focus { border-color: var(--paper); }
+
+.radio-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.radio-chip {
+  padding: 12px 18px;
+  border: 1px solid rgba(255,255,255,0.15);
+  font-family: var(--f-mono);
+  font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--steel-dim);
+}
+.radio-chip.active {
+  background: var(--red);
+  color: var(--paper);
+  border-color: var(--red);
+}
+
+.submitted {
+  padding: 48px;
+  border: 1px solid rgba(255,255,255,0.15);
+  text-align: center;
+}
+.submitted .check {
+  width: 64px; height: 64px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: var(--red);
+  display: grid; place-items: center;
+  color: var(--paper);
+}
+.submitted h3 {
+  font-size: 28px; font-weight: 800;
+  text-transform: uppercase; margin-bottom: 12px;
+}
+@media (max-width: 720px) { .request-form { grid-template-columns: 1fr; } }
+@media (max-width: 520px) {
+  .form-section .lead {
+    font-size: 15px;
+    margin-bottom: 28px;
+    max-width: none;
+    width: 100%;
+  }
+  .radio-row { gap: 6px; }
+  .radio-row { justify-content: center; }
+  .radio-chip { padding: 10px 12px; font-size: 10px; }
+  .submitted { padding: 32px 20px; }
+  .submitted h3 { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="assets/data.js?v=20260504d"></script>
+<script src="assets/i18n.js?v=20260504d"></script>
+<script src="assets/placeholders.js?v=20260504d"></script>
+<script type="text/babel" src="assets/components.jsx?v=20260504d"></script>
+<script type="text/babel" data-presets="env,react">
+const { useState, useEffect, useRef } = React;
+
+function Hero() {
+  return (
+    <section className="custom-hero">
+      <div className="wrap">
+        <div className="eyebrow" style={{color:'var(--red)', marginBottom: 28}}>{t('custom.eye')}</div>
+        <h1 className="reveal">
+          {t('custom.t1')}<br/>
+          <span className="stroke">{t('custom.t2')}</span><br/>
+          <span className="red">{t('custom.t3')}</span>
+        </h1>
+        <p className="reveal delay-1">
+          {t('custom.lede')}
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function Process() {
+  const steps = [
+    { n: '01', t: 'Briefing', p: 'Me cuentas qué quieres entrenar, de qué espacio dispones y qué presupuesto manejas. Sin compromiso.' },
+    { n: '02', t: 'Diseño 3D', p: 'En 72 horas te envío renders y planos con medidas exactas. Revisamos juntos hasta afinarlo.' },
+    { n: '03', t: 'Presupuesto cerrado', p: 'Precio, materiales y fecha de entrega por escrito. Sin costes ocultos ni sorpresas.' },
+    { n: '04', t: 'Fabricación artesanal', p: 'Corte, soldadura TIG, pulido y pintura epoxi al horno. Cada pieza pasa por mi mano.' },
+    { n: '05', t: 'Envío e instalación', p: 'Entrega a domicilio en Europa. Instalación y ajuste incluidos en tu taller o gimnasio.' }
+  ];
+  return (
+    <section className="process">
+      <div className="wrap">
+        <div className="process-grid">
+          <div>
+            <div className="eyebrow red" style={{marginBottom: 20}}>◆ PROCESO</div>
+            <h2 className="reveal">Del boceto<br/>al taller.<br/>En 5 pasos.</h2>
+            <p className="body-lg reveal delay-1" style={{maxWidth: '42ch', marginTop: 24}}>
+              Un proceso transparente, pensado para que sepas exactamente qué
+              estás comprando antes de que empecemos a cortar acero.
+            </p>
+          </div>
+          <div className="process-steps">
+            {steps.map((s, i) => (
+              <div key={s.n} className="step reveal" style={{transitionDelay: `${i * 0.05}s`}}>
+                <div className="n">◆ {s.n}</div>
+                <div>
+                  <h3>{s.t}</h3>
+                  <p>{s.p}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function RequestForm() {
+  const [form, setForm] = useState({
+    name: '', email: '', phone: '',
+    machineType: '', budget: '',
+    width: '', height: '', depth: '',
+    description: ''
+  });
+  const [errors, setErrors] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+
+  const set = (k, v) => setForm(f => ({...f, [k]: v}));
+
+  const validate = () => {
+    const e = {};
+    if (!form.name.trim()) e.name = true;
+    if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = true;
+    if (!form.machineType) e.machineType = true;
+    if (!form.description.trim() || form.description.trim().length < 20) e.description = true;
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const onSubmit = (ev) => {
+    ev.preventDefault();
+    if (validate()) setSubmitted(true);
+  };
+
+  if (submitted) return (
+    <section className="form-section">
+      <div className="wrap">
+        <div className="submitted">
+          <div className="check"><SJPIcon name="check" size={28} stroke={2.4}/></div>
+          <h3>{t('form.received')}</h3>
+          <p style={{color:'var(--steel-dim)', maxWidth: '48ch', margin: '0 auto'}}>
+            {t('form.thanks')}, {form.name}. {window.SJP_LANG === 'en' ? `I'll review the details and write back to ${form.email} within 72 hours with a first proposal.` : `Revisaré los datos y te escribiré a ${form.email} en las próximas 72 horas con una primera propuesta.`}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+
+  return (
+    <section className="form-section">
+      <div className="wrap">
+        <div className="eyebrow" style={{color: 'var(--red)', marginBottom: 20}}>{t('custom.formEye')}</div>
+        <h2 className="reveal">{t('custom.formT1')}<br/><span className="red">{t('custom.formT2')}</span></h2>
+        <p className="lead reveal delay-1">
+          {t('custom.formLead')}
+        </p>
+
+        <form className="request-form reveal delay-2" onSubmit={onSubmit} noValidate>
+          <div className={`field ${errors.name ? 'error' : ''}`}>
+            <label>{t('form.name')} *</label>
+            <input value={form.name} onChange={e => set('name', e.target.value)}/>
+            <span className="err-msg">{t('form.required')}</span>
+          </div>
+          <div className={`field ${errors.email ? 'error' : ''}`}>
+            <label>{t('form.email')} *</label>
+            <input type="email" value={form.email} onChange={e => set('email', e.target.value)}/>
+            <span className="err-msg">{t('form.invalidEmail')}</span>
+          </div>
+          <div className="field">
+            <label>{t('form.phone')}</label>
+            <input value={form.phone} onChange={e => set('phone', e.target.value)}/>
+          </div>
+          <div className="field">
+            <label>{t('form.budget')}</label>
+            <select value={form.budget} onChange={e => set('budget', e.target.value)}>
+              <option value="">{window.SJP_LANG === 'en' ? 'Select…' : 'Selecciona…'}</option>
+              <option>{window.SJP_LANG === 'en' ? 'Under €1,500' : 'Menos de 1.500 €'}</option>
+              <option>1.500 € – 3.000 €</option>
+              <option>3.000 € – 6.000 €</option>
+              <option>{window.SJP_LANG === 'en' ? 'Over €6,000' : 'Más de 6.000 €'}</option>
+            </select>
+          </div>
+          <div className={`field full ${errors.machineType ? 'error' : ''}`}>
+            <label>{t('form.machineType')} *</label>
+            <div className="radio-row">
+              {(window.SJP_LANG === 'en' ? ['Chest','Back','Legs','Forearms','Cardio','Rack','Accessory','Other'] : ['Pecho','Espalda','Piernas','Antebrazos','Cardio','Rack','Accesorio','Otro']).map(tt => (
+                <div key={tt}
+                  className={`radio-chip${form.machineType === tt ? ' active' : ''}`}
+                  onClick={() => set('machineType', tt)}>{tt}</div>
+              ))}
+            </div>
+            <span className="err-msg">{t('form.selectOpt')}</span>
+          </div>
+          <div className="field">
+            <label>{t('form.width')}</label>
+            <input type="number" value={form.width} onChange={e => set('width', e.target.value)}/>
+          </div>
+          <div className="field">
+            <label>{t('form.height')}</label>
+            <input type="number" value={form.height} onChange={e => set('height', e.target.value)}/>
+          </div>
+          <div className="field full">
+            <label>{t('form.depth')}</label>
+            <input type="number" value={form.depth} onChange={e => set('depth', e.target.value)}/>
+          </div>
+          <div className={`field full ${errors.description ? 'error' : ''}`}>
+            <label>{t('form.desc')} * ({window.SJP_LANG === 'en' ? 'min 20 characters' : 'mínimo 20 caracteres'})</label>
+            <textarea value={form.description} onChange={e => set('description', e.target.value)}
+              placeholder={t('form.descPh')}/>
+            <span className="err-msg">{t('form.moreDetail')}</span>
+          </div>
+          <div className="field full" style={{marginTop: 16}}>
+            <button type="submit" className="btn btn-red">
+              {t('form.send')} <SJPIcon name="arrow-right" size={14}/>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  );
+}
+
+function App() {
+  const ref = useRef(null);
+  useReveal(ref);
+  useLang();
+  return (
+    <div ref={ref}>
+      <SJPNav active="custom"/>
+      <Hero/>
+      <SJPMarquee items={['Sin plantillas', 'Diseño 3D gratuito', '72h presupuesto', 'Instalación incluida', 'Hecho a medida', 'Pago fraccionado']}/>
+      <RequestForm/>
+      <SJPFooter/>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

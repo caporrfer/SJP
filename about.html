@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sobre mí — SJP Strength Generation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/styles.css?v=20260504d"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+.about-hero {
+  background: var(--ink); color: var(--paper);
+  padding: 96px 0 80px;
+}
+.about-hero-grid {
+  display: grid; grid-template-columns: 1.3fr 1fr;
+  gap: 64px; align-items: end;
+}
+.about-hero h1 {
+  font-size: clamp(54px, 9vw, 132px);
+  font-weight: 800; line-height: 0.88;
+  letter-spacing: -0.025em; text-transform: uppercase;
+}
+.about-hero h1 em { font-style: normal; color: var(--red); }
+.about-hero .bio {
+  font-size: 16px; line-height: 1.65; color: var(--steel-dim);
+  max-width: 40ch;
+}
+@media (max-width: 800px) { .about-hero-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+.photo-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 4px;
+  padding-top: 4px;
+  background: var(--ink);
+}
+.ph {
+  aspect-ratio: 4 / 5;
+  background: #1A1A1A;
+  position: relative;
+  overflow: hidden;
+  display: flex; align-items: flex-end;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.ph.tall { aspect-ratio: 4 / 5.4; }
+.ph .ph-label {
+  position: relative; z-index: 2;
+  font-family: var(--f-mono);
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--paper);
+  opacity: 0.75;
+}
+.ph .ph-num {
+  position: absolute; top: 16px; left: 20px;
+  font-family: var(--f-mono);
+  font-size: 10px; letter-spacing: 0.2em;
+  color: var(--red);
+}
+@media (max-width: 700px) {
+  .photo-row { grid-template-columns: 1fr 1fr; }
+  .photo-row .ph:first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 520px) {
+  .about-hero { padding: 72px 0 56px; }
+  .about-hero,
+  .story,
+  .numbers,
+  .values {
+    text-align: center;
+  }
+  .about-hero .bio,
+  .story-grid p,
+  .story-grid .pull-quote {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: none;
+    width: 100%;
+  }
+  .photo-row { grid-template-columns: 1fr; }
+  .photo-row .ph:first-child { grid-column: auto; }
+}
+
+.story {
+  padding: clamp(80px, 10vw, 140px) 0;
+}
+.story-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 80px; align-items: start;
+}
+.story-grid .aside {
+  position: sticky; top: calc(var(--nav-h) + 40px);
+  display: flex; flex-direction: column; gap: 16px;
+}
+.story-grid .aside .year {
+  font-weight: 800; font-size: 72px;
+  line-height: 0.9; letter-spacing: -0.02em;
+}
+.story-grid .aside .year .red { color: var(--red); }
+.story-grid h2 {
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 800; line-height: 1.02;
+  letter-spacing: -0.015em; text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.story-grid p {
+  font-size: 17px; line-height: 1.65;
+  color: var(--ink-2); margin-bottom: 20px;
+  max-width: 58ch;
+}
+.story-grid p.lede {
+  font-size: 22px; line-height: 1.45; color: var(--ink);
+  font-weight: 500; margin-bottom: 40px;
+}
+.story-grid .pull-quote {
+  margin: 48px 0;
+  padding: 32px 40px;
+  border-left: 3px solid var(--red);
+  font-size: 22px; font-weight: 600;
+  line-height: 1.3; letter-spacing: -0.01em;
+  text-transform: uppercase;
+  max-width: 44ch;
+}
+@media (max-width: 900px) {
+  .story-grid { grid-template-columns: 1fr; gap: 32px; }
+  .story-grid .aside { position: static; }
+}
+@media (max-width: 520px) {
+  .story-grid .aside .year { font-size: 52px; }
+  .story-grid p { font-size: 15px; }
+  .story-grid p.lede { font-size: 18px; margin-bottom: 28px; }
+  .story-grid .pull-quote { padding: 20px 18px; font-size: 18px; margin: 32px 0; }
+}
+
+.numbers {
+  background: var(--ink); color: var(--paper);
+  padding: clamp(80px, 10vw, 120px) 0;
+}
+.numbers-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 48px;
+}
+.numbers-grid .n {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.numbers-grid .big {
+  font-size: clamp(56px, 7vw, 96px);
+  font-weight: 800; line-height: 0.9;
+  letter-spacing: -0.025em;
+}
+.numbers-grid .big sup {
+  font-size: 0.4em; color: var(--red);
+  vertical-align: super;
+}
+.numbers-grid .lab {
+  font-family: var(--f-mono);
+  font-size: 11px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--steel);
+}
+@media (max-width: 780px) { .numbers-grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
+@media (max-width: 520px) {
+  .numbers-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+
+.values {
+  padding: clamp(80px, 10vw, 140px) 0;
+  background: var(--paper-2);
+}
+.values-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--steel-line); border: 1px solid var(--steel-line);
+}
+.value-card {
+  background: var(--paper); padding: 40px 36px;
+  display: flex; flex-direction: column; gap: 14px; min-height: 280px;
+}
+.value-card .n {
+  font-family: var(--f-mono); font-size: 11px;
+  letter-spacing: 0.15em; color: var(--red);
+}
+.value-card h3 {
+  font-size: 26px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: -0.01em;
+  line-height: 1;
+}
+.value-card p { font-size: 14px; line-height: 1.6; color: var(--ink-2); margin-top: auto; }
+@media (max-width: 780px) { .values-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) {
+  .value-card { padding: 28px 20px; min-height: 0; }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="assets/data.js?v=20260504d"></script>
+<script src="assets/i18n.js?v=20260504d"></script>
+<script src="assets/placeholders.js?v=20260504d"></script>
+<script type="text/babel" src="assets/components.jsx?v=20260504d"></script>
+<script type="text/babel" data-presets="env,react">
+const { useRef } = React;
+
+function PhotoPlaceholder({ num, label, variant = 'portrait' }) {
+  const shapes = {
+    portrait: (
+      <g>
+        <circle cx="150" cy="130" r="55" fill="#2A2A2A"/>
+        <path d="M 80 280 Q 150 200 220 280 L 220 320 L 80 320 Z" fill="#2A2A2A"/>
+      </g>
+    ),
+    welding: (
+      <g>
+        <rect x="60" y="160" width="180" height="10" fill="#2A2A2A"/>
+        <rect x="130" y="80" width="40" height="90" fill="#2A2A2A"/>
+        <circle cx="150" cy="100" r="18" fill="#DC1F1F" opacity="0.4"/>
+        <circle cx="150" cy="100" r="8" fill="#DC1F1F"/>
+        <path d="M 120 160 L 100 260 L 200 260 L 180 160" fill="none" stroke="#2A2A2A" strokeWidth="2"/>
+      </g>
+    ),
+    workshop: (
+      <g>
+        <rect x="40" y="200" width="220" height="10" fill="#2A2A2A"/>
+        <rect x="60" y="100" width="40" height="100" fill="#2A2A2A"/>
+        <rect x="200" y="80" width="40" height="120" fill="#2A2A2A"/>
+        <rect x="120" y="130" width="60" height="70" fill="#2A2A2A"/>
+      </g>
+    )
+  };
+  return (
+    <div className="ph">
+      <span className="ph-num">◆ {num}</span>
+      <svg viewBox="0 0 300 320" style={{position:'absolute', inset:0, width:'100%', height:'100%'}} preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id={`pg-${num}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#202020"/>
+            <stop offset="100%" stopColor="#0E0E0E"/>
+          </linearGradient>
+          <pattern id={`pp-${num}`} width="24" height="24" patternUnits="userSpaceOnUse">
+            <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#FFFFFF" strokeOpacity="0.03" strokeWidth="0.5"/>
+          </pattern>
+        </defs>
+        <rect width="300" height="320" fill={`url(#pg-${num})`}/>
+        <rect width="300" height="320" fill={`url(#pp-${num})`}/>
+        {shapes[variant]}
+      </svg>
+      <span className="ph-label">{label}</span>
+    </div>
+  );
+}
+
+function Hero() {
+  return (
+    <section className="about-hero">
+      <div className="wrap">
+        <div className="about-hero-grid">
+          <div>
+            <div className="eyebrow" style={{color:'var(--red)', marginBottom: 28}}>{t('about.eye')}</div>
+            <h1 className="reveal">
+              {t('about.t1')}<br/>
+              <em>{t('about.t2')}</em><br/>
+              {t('about.t3')}
+            </h1>
+          </div>
+          <div className="reveal delay-1">
+            <p className="bio">
+              {t('about.bio')}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="wrap photo-row reveal delay-2" style={{marginTop: 56, marginLeft: 'auto', marginRight: 'auto'}}>
+        <PhotoPlaceholder num="01" label={window.SJP_LANG === 'en' ? 'Workshop · Madrid' : 'En el taller · Madrid'} variant="workshop"/>
+        <PhotoPlaceholder num="02" label={window.SJP_LANG === 'en' ? 'TIG welding' : 'Soldadura TIG'} variant="welding"/>
+        <PhotoPlaceholder num="03" label={window.SJP_LANG === 'en' ? 'Portrait' : 'Retrato'} variant="portrait"/>
+      </div>
+    </section>
+  );
+}
+
+function Story() {
+  return (
+    <section className="story">
+      <div className="wrap">
+        <div className="story-grid">
+          <div className="aside">
+            <div className="eyebrow red">{t('about.histEye')}</div>
+            <div className="year">2018<span className="red">.</span></div>
+            <div className="mono" style={{color:'var(--steel)'}}>{t('about.year')}</div>
+          </div>
+          <div>
+            <p className="lede reveal">
+              {t('about.lede')}
+            </p>
+            <p className="reveal delay-1">
+              {t('about.p1')}
+            </p>
+            <p className="reveal delay-1">
+              {t('about.p2')}
+            </p>
+            <div className="pull-quote reveal" style={{whiteSpace:'pre-line'}}>
+              {t('about.quote')}
+            </div>
+            <p className="reveal">
+              {t('about.p3')}
+            </p>
+            <p className="reveal">
+              {t('about.p4')}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Numbers() {
+  const nums = [
+    { b: '150+', l: 'Máquinas entregadas' },
+    { b: '8', l: 'Años fabricando' },
+    { b: '4', l: 'Países servidos' },
+    { b: '0', l: 'Unidades reemplazadas por fallo' }
+  ];
+  return (
+    <section className="numbers">
+      <div className="wrap">
+        <div className="eyebrow" style={{color:'var(--red)', marginBottom: 40}}>◆ POR LOS NÚMEROS</div>
+        <div className="numbers-grid">
+          {nums.map((n, i) => (
+            <div key={i} className="n reveal" style={{transitionDelay: `${i * 0.06}s`}}>
+              <div className="big">{n.b}<sup>◆</sup></div>
+              <div className="lab">{n.l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Values() {
+  const v = [
+    { n: '01', t: 'Acero honesto', p: 'Solo S275 estructural certificado. Nada de tubo fino pintado para parecer grueso. Si parece robusto, es porque lo es.' },
+    { n: '02', t: 'Soldadura visible', p: 'No escondo cordones. Una soldadura limpia es la firma del oficio. Puedes verla, tocarla, revisarla.' },
+    { n: '03', t: 'Sin compromisos', p: 'Si una pieza no pasa mi control, no sale del taller. Es lento, es caro, pero es la única forma que conozco.' }
+  ];
+  return (
+    <section className="values">
+      <div className="wrap">
+        <div style={{marginBottom: 48}}>
+          <div className="eyebrow red" style={{marginBottom: 16}}>◆ PRINCIPIOS</div>
+          <h2 className="h-1 reveal">Tres líneas<br/>que no cruzo.</h2>
+        </div>
+        <div className="values-grid">
+          {v.map((x, i) => (
+            <div key={x.n} className="value-card reveal" style={{transitionDelay: `${i * 0.06}s`}}>
+              <div className="n">◆ {x.n}</div>
+              <h3>{x.t}</h3>
+              <p>{x.p}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function App() {
+  const ref = useRef(null);
+  useReveal(ref);
+  useLang();
+  return (
+    <div ref={ref}>
+      <SJPNav active="about"/>
+      <Hero/>
+      <Story/>
+      <SJPFooter/>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

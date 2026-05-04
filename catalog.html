@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Catálogo — SJP Strength Generation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/styles.css?v=20260504d"/>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+.cat-hero {
+  background: var(--ink); color: var(--paper);
+  padding: 72px 0 64px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.cat-hero h1 {
+  font-size: clamp(48px, 8vw, 112px);
+  font-weight: 800; line-height: 0.9;
+  letter-spacing: -0.02em; text-transform: uppercase;
+}
+.cat-hero h1 em { font-style: normal; color: var(--red); }
+.cat-hero-inner {
+  display: grid; grid-template-columns: 1.2fr 1fr;
+  gap: 64px; align-items: end;
+}
+.cat-hero p {
+  font-size: 17px; line-height: 1.55;
+  color: var(--steel-dim); max-width: 44ch;
+}
+.cat-hero .meta-line {
+  display: flex; gap: 32px; margin-top: 32px; flex-wrap: wrap;
+}
+.cat-hero .meta-line div {
+  font-family: var(--f-mono);
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--steel);
+}
+.cat-hero .meta-line div b { color: var(--paper); font-weight: 500; }
+@media (max-width: 800px) { .cat-hero-inner { grid-template-columns: 1fr; gap: 32px; } }
+
+.filters-bar {
+  position: sticky; top: var(--nav-h); z-index: 50;
+  background: var(--paper);
+  border-bottom: 1px solid var(--steel-line);
+  padding: 16px 0;
+}
+.filters-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+}
+.filter-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.filter-chip {
+  padding: 10px 18px;
+  border: 1px solid var(--steel-line);
+  background: var(--paper);
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink-2);
+  transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.filter-chip.active {
+  background: var(--ink); color: var(--paper);
+  border-color: var(--ink);
+}
+.filter-chip .count {
+  font-family: var(--f-mono);
+  font-size: 10px; letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+.filter-chip:hover:not(.active) { border-color: var(--ink); }
+
+.view-controls { display: flex; gap: 12px; align-items: center; }
+.search-box {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 14px;
+  border: 1px solid var(--steel-line);
+  min-width: 220px;
+}
+.search-box input {
+  border: none; outline: none; background: transparent;
+  font-family: var(--f-sans); font-size: 13px; flex: 1;
+}
+
+.catalog-section {
+  padding: 64px 0 32px;
+  scroll-margin-top: calc(var(--nav-h) + 68px);
+}
+.section-head {
+  display: flex; align-items: end; justify-content: space-between;
+  gap: 32px; margin-bottom: 40px; padding-bottom: 24px;
+  border-bottom: 1px solid var(--steel-line);
+  flex-wrap: wrap;
+}
+.section-head h2 {
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 800; line-height: 0.95;
+  letter-spacing: -0.015em; text-transform: uppercase;
+}
+.section-head .count-mono {
+  font-family: var(--f-mono);
+  font-size: 11px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--steel);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+@media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 780px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--steel);
+  font-family: var(--f-mono); font-size: 12px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(10,10,10,0.75);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200;
+  padding: 32px;
+  animation: fadeIn 0.25s var(--ease-out);
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal {
+  background: var(--paper);
+  max-width: 1040px; width: 100%;
+  max-height: 90vh; overflow: auto;
+  display: grid; grid-template-columns: 1.2fr 1fr;
+  position: relative;
+  animation: slideUp 0.35s var(--ease-out);
+}
+@keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.modal-close {
+  position: absolute; top: 16px; right: 16px; z-index: 2;
+  width: 40px; height: 40px; background: var(--paper);
+  display: grid; place-items: center;
+  border: 1px solid var(--steel-line);
+  transition: all 0.2s;
+}
+.modal-close:hover { background: var(--ink); color: var(--paper); }
+.modal-img {
+  background: var(--paper-2);
+  min-height: 420px;
+  position: relative;
+  background-size: cover; background-position: center;
+}
+.modal-img .mono-tag {
+  position: absolute; bottom: 16px; left: 16px;
+  font-family: var(--f-mono); font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink); opacity: 0.6;
+}
+.modal-body {
+  padding: 40px 36px; display: flex; flex-direction: column; gap: 20px;
+}
+.modal-body h3 {
+  font-size: 32px; font-weight: 800;
+  line-height: 1; letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.modal-body .price-big {
+  font-size: 28px; font-weight: 700;
+}
+.modal-body .price-big .from {
+  font-family: var(--f-mono); font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--steel); font-weight: 400; margin-right: 10px;
+}
+.spec-table {
+  border-top: 1px solid var(--steel-line);
+  margin-top: 8px;
+}
+.spec-row {
+  display: grid; grid-template-columns: 120px 1fr;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--steel-line);
+  font-size: 13px;
+}
+.spec-row .k {
+  font-family: var(--f-mono); font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--steel);
+}
+.modal-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: auto; padding-top: 16px; }
+@media (max-width: 780px) {
+  .modal { grid-template-columns: 1fr; }
+  .modal-img { min-height: 280px; }
+}
+@media (max-width: 600px) {
+  .cat-hero,
+  .catalog-section,
+  .section-head {
+    text-align: center;
+  }
+  .cat-hero p {
+    max-width: none;
+    width: 100%;
+  }
+  .modal-backdrop { padding: 0; }
+  .modal { max-height: 100vh; height: 100vh; }
+  .modal-img { min-height: 220px; }
+  .modal-body { padding: 28px 22px; gap: 16px; }
+  .modal-body h3 { font-size: 24px; }
+  .modal-body .price-big { font-size: 22px; }
+  .modal-actions .btn { flex: 1 1 100%; justify-content: center; }
+  .filters-inner { flex-wrap: wrap; gap: 16px; }
+  .filters-bar { overflow: hidden; }
+  .filter-chips {
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 2px 6px;
+    margin: 0;
+    scrollbar-width: none;
+  }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .filter-chip { white-space: nowrap; flex-shrink: 0; }
+  .view-controls { width: 100%; }
+  .search-box { width: 100%; }
+  .search-box input { width: 100%; }
+  .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+@media (max-width: 520px) {
+  .cat-hero { padding: 56px 0 48px; }
+  .cat-hero,
+  .section-head {
+    text-align: center;
+  }
+  .cat-hero p { margin-left: auto; margin-right: auto; }
+  .cat-hero p { font-size: 15px; }
+  .catalog-section { padding: 40px 0 20px; }
+  .grid { gap: 16px; }
+  .filter-chip { padding: 9px 14px; font-size: 11px; }
+  .search-box { min-width: 0; }
+  .spec-row { grid-template-columns: 1fr; gap: 6px; }
+  .filters-inner,
+  .view-controls {
+    justify-content: center;
+  }
+  .filter-chips {
+    justify-content: flex-start;
+  }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="assets/data.js?v=20260504d"></script>
+<script src="assets/i18n.js?v=20260504d"></script>
+<script src="assets/placeholders.js?v=20260504d"></script>
+<script type="text/babel" src="assets/components.jsx?v=20260504d"></script>
+<script type="text/babel" data-presets="env,react">
+const { useState, useEffect, useRef, useMemo } = React;
+
+function ProductModal({ product, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+  }, []);
+
+  const imgUrl = product.image || window.sjpPlaceholder(product.kind, product.code);
+  return (
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close" onClick={onClose} aria-label="Cerrar">
+          <SJPIcon name="x" size={16}/>
+        </button>
+        <div className="modal-img" style={{backgroundImage: `url("${imgUrl}")`}}>
+          <div className="mono-tag">{product.code} · {product.cat.toUpperCase()}</div>
+        </div>
+        <div className="modal-body">
+          <div style={{display:'flex', gap: 8}}>
+            {product.tag && <span className="pill"><span className="pill-dot"></span>{product.tag}</span>}
+            {product.video && <span className="pill"><SJPIcon name="play" size={10}/> Video</span>}
+          </div>
+          <h3>{product.name}</h3>
+          <p className="body">{product.desc}</p>
+          <div className="price-big"><span className="from">Desde</span>{product.price.toLocaleString('es-ES')} €</div>
+          <div className="modal-actions">
+            <button className="btn btn-red" onClick={() => alert('Añadido al carrito (demo)')}>
+              Comprar <SJPIcon name="arrow-right" size={14}/>
+            </button>
+            <a href="contact.html" className="btn btn-outline">
+              Solicitar información
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Catalog() {
+  const [filter, setFilter] = useState('all');
+  const [query, setQuery] = useState('');
+  const [selected, setSelected] = useState(null);
+  const ref = useRef(null);
+  useReveal(ref);
+  useLang();
+
+  useEffect(() => {
+    const hash = window.location.hash.replace('#','');
+    if (hash && SJP_CATEGORIES.some(c => c.id === hash)) setFilter(hash);
+  }, []);
+
+  const groups = useMemo(() => {
+    const cats = filter === 'all' ? SJP_CATEGORIES.filter(c => c.id !== 'all') : SJP_CATEGORIES.filter(c => c.id === filter);
+    const q = query.trim().toLowerCase();
+    return cats.map(cat => ({
+      cat,
+      items: SJP_PRODUCTS.filter(p => p.cat === cat.id && (!q || p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q)))
+    })).filter(g => g.items.length > 0);
+  }, [filter, query]);
+
+  const totalVisible = groups.reduce((n, g) => n + g.items.length, 0);
+
+  return (
+    <div ref={ref}>
+      <SJPNav active="catalog"/>
+
+      <section className="cat-hero">
+        <div className="wrap">
+          <div className="cat-hero-inner">
+            <div>
+              <div className="eyebrow" style={{color:'var(--red)', marginBottom: 20}}>{t('catalog.eye')}</div>
+              <h1 className="reveal">{t('catalog.t1')}<br/><em>{t('catalog.t2')}</em></h1>
+            </div>
+            <div className="reveal delay-1"></div>
+          </div>
+        </div>
+      </section>
+
+      <div className="filters-bar">
+        <div className="wrap">
+          <div className="filters-inner">
+            <div className="filter-chips">
+              {SJP_CATEGORIES.map(c => (
+                <button key={c.id}
+                  className={`filter-chip${filter === c.id ? ' active' : ''}`}
+                  onClick={() => { setFilter(c.id); window.location.hash = c.id === 'all' ? '' : c.id; }}>
+                  {(window.SJP_LANG === 'en' && window.SJP_CATEGORIES_EN && window.SJP_CATEGORIES_EN[c.id]) || c.label} <span className="count">{c.count}</span>
+                </button>
+              ))}
+            </div>
+            <div className="view-controls">
+              <div className="search-box">
+                <SJPIcon name="search" size={14}/>
+                <input placeholder={t('catalog.search')} value={query} onChange={(e) => setQuery(e.target.value)}/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="wrap">
+        {totalVisible === 0 && (
+          <div className="empty-state">◆ Sin resultados para "{query}"</div>
+        )}
+
+        {groups.map(g => (
+          <section key={g.cat.id} id={g.cat.id} className="catalog-section">
+            <div className="section-head">
+              <div>
+                <div className="count-mono">◆ {String(SJP_CATEGORIES.findIndex(c => c.id === g.cat.id)).padStart(2,'0')} · {g.items.length} productos</div>
+                <h2 style={{marginTop: 12}}>{(window.SJP_LANG === 'en' && window.SJP_CATEGORIES_EN && window.SJP_CATEGORIES_EN[g.cat.id]) || g.cat.label}</h2>
+              </div>
+              <span className="count-mono">SJP / {g.cat.id.toUpperCase()}</span>
+            </div>
+            <div className="grid">
+              {g.items.map(p => (
+                <div className="reveal" key={p.id}>
+                  <SJPProductCard product={p} onInfo={(prod) => setSelected(prod)}/>
+                </div>
+              ))}
+            </div>
+          </section>
+        ))}
+
+        <div style={{padding: '80px 0'}}/>
+      </div>
+
+      <SJPFooter/>
+      {selected && <ProductModal product={selected} onClose={() => setSelected(null)}/>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<Catalog/>);
+</script>
+</body>
+</html>

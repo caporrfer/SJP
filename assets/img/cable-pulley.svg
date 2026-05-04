@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1A1A1A"></stop>
+      <stop offset="100%" stop-color="#080808"></stop>
+    </linearGradient>
+    <radialGradient id="spot" cx="0.5" cy="0.3" r="0.7">
+      <stop offset="0%" stop-color="#3A3A3A" stop-opacity="0.85"></stop>
+      <stop offset="100%" stop-color="#080808" stop-opacity="0"></stop>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#FFFFFF" stroke-opacity="0.04" stroke-width="0.6"></path>
+    </pattern>
+    <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3D3D3D"></stop>
+      <stop offset="50%" stop-color="#252525"></stop>
+      <stop offset="100%" stop-color="#161616"></stop>
+    </linearGradient>
+    <linearGradient id="metalShine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1A1A1A"></stop>
+      <stop offset="50%" stop-color="#4A4A4A"></stop>
+      <stop offset="100%" stop-color="#1A1A1A"></stop>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"></rect>
+  <rect width="800" height="600" fill="url(#spot)"></rect>
+  <rect width="800" height="600" fill="url(#grid)"></rect>
+  
+  <polygon points="0,460 800,460 800,600 0,600" fill="#0A0A0A"></polygon>
+  <line x1="0" y1="460" x2="800" y2="460" stroke="#FFFFFF" stroke-opacity="0.08"></line>
+
+  
+  <rect x="180" y="60" width="32" height="420" fill="url(#metalShine)"></rect>
+  <rect x="588" y="60" width="32" height="420" fill="url(#metalShine)"></rect>
+  
+  <rect x="180" y="60" width="440" height="20" fill="#222"></rect>
+  <rect x="180" y="60" width="440" height="3" fill="#3A3A3A"></rect>
+  
+  <rect x="160" y="460" width="76" height="14" fill="#1F1F1F"></rect>
+  <rect x="564" y="460" width="76" height="14" fill="#1F1F1F"></rect>
+
+  
+  <rect x="640" y="120" width="100" height="340" fill="#141414" stroke="#2A2A2A" stroke-width="1.5"></rect>
+  <g fill="#1F1F1F" stroke="#0A0A0A" stroke-width="1">
+    <rect x="650" y="130" width="80" height="22"></rect>
+    <rect x="650" y="156" width="80" height="22"></rect>
+    <rect x="650" y="182" width="80" height="22"></rect>
+    <rect x="650" y="208" width="80" height="22"></rect>
+    <rect x="650" y="234" width="80" height="22"></rect>
+    <rect x="650" y="260" width="80" height="22"></rect>
+    <rect x="650" y="286" width="80" height="22"></rect>
+    <rect x="650" y="312" width="80" height="22"></rect>
+    <rect x="650" y="338" width="80" height="22"></rect>
+    <rect x="650" y="364" width="80" height="22"></rect>
+  </g>
+  
+  <circle cx="700" cy="240" r="5" fill="#DC1F1F"></circle>
+  <rect x="690" y="237" width="22" height="6" fill="#DC1F1F"></rect>
+
+  
+  <line x1="690" y1="120" x2="690" y2="80" stroke="#5A5A5A" stroke-width="2"></line>
+  
+  <circle cx="600" cy="80" r="14" fill="#252525" stroke="#444" stroke-width="1.5"></circle>
+  <circle cx="600" cy="80" r="6" fill="#0A0A0A"></circle>
+  
+  <circle cx="200" cy="80" r="14" fill="#252525" stroke="#444" stroke-width="1.5"></circle>
+  <circle cx="200" cy="80" r="6" fill="#0A0A0A"></circle>
+  <line x1="600" y1="80" x2="200" y2="80" stroke="#5A5A5A" stroke-width="2"></line>
+
+  
+  <rect x="170" y="140" width="56" height="40" rx="2" fill="url(#metal)" stroke="#444" stroke-width="1"></rect>
+  <circle cx="198" cy="160" r="11" fill="#1A1A1A" stroke="#444" stroke-width="1"></circle>
+  <circle cx="198" cy="160" r="4" fill="#DC1F1F"></circle>
+  
+  <path d="M 200 80 Q 198 110 198 160 Q 198 175 220 200 L 280 240" stroke="#5A5A5A" stroke-width="2" fill="none"></path>
+  
+  <g transform="translate(280,240) rotate(15)">
+    <rect x="-4" y="0" width="8" height="50" fill="#3A2418"></rect>
+    <ellipse cx="0" cy="55" rx="14" ry="6" fill="#1F1F1F"></ellipse>
+    <ellipse cx="0" cy="55" rx="9" ry="3" fill="#0A0A0A"></ellipse>
+  </g>
+
+  
+  <rect x="574" y="380" width="56" height="40" rx="2" fill="url(#metal)" stroke="#444" stroke-width="1"></rect>
+  <circle cx="602" cy="400" r="11" fill="#1A1A1A" stroke="#444" stroke-width="1"></circle>
+  <circle cx="602" cy="400" r="4" fill="#DC1F1F"></circle>
+  
+  <path d="M 690 80 Q 690 200 660 350 L 602 400 Q 580 410 540 410" stroke="#5A5A5A" stroke-width="2" fill="none"></path>
+  
+  <g transform="translate(540,410)">
+    <rect x="-30" y="-6" width="36" height="12" rx="2" fill="#1F1F1F" stroke="#444" stroke-width="0.8"></rect>
+    <path d="M -30 -6 Q -50 0 -30 6" fill="none" stroke="#3A3A3A" stroke-width="3"></path>
+  </g>
+
+  
+  <g fill="#0A0A0A">
+    <circle cx="196" cy="100" r="2.5"></circle>
+    <circle cx="196" cy="125" r="2.5"></circle>
+    <circle cx="196" cy="150" r="2.5"></circle>
+    <circle cx="196" cy="175" r="2.5"></circle>
+    <circle cx="196" cy="200" r="2.5"></circle>
+    <circle cx="196" cy="225" r="2.5"></circle>
+    <circle cx="196" cy="250" r="2.5"></circle>
+    <circle cx="196" cy="275" r="2.5"></circle>
+    <circle cx="196" cy="300" r="2.5"></circle>
+    <circle cx="196" cy="325" r="2.5"></circle>
+    <circle cx="196" cy="350" r="2.5"></circle>
+    <circle cx="196" cy="375" r="2.5"></circle>
+    <circle cx="196" cy="400" r="2.5"></circle>
+  </g>
+  
+  <g fill="#0A0A0A">
+    <circle cx="604" cy="100" r="2.5"></circle>
+    <circle cx="604" cy="125" r="2.5"></circle>
+    <circle cx="604" cy="150" r="2.5"></circle>
+    <circle cx="604" cy="175" r="2.5"></circle>
+    <circle cx="604" cy="200" r="2.5"></circle>
+    <circle cx="604" cy="225" r="2.5"></circle>
+    <circle cx="604" cy="250" r="2.5"></circle>
+    <circle cx="604" cy="275" r="2.5"></circle>
+    <circle cx="604" cy="300" r="2.5"></circle>
+    <circle cx="604" cy="325" r="2.5"></circle>
+    <circle cx="604" cy="350" r="2.5"></circle>
+    <circle cx="604" cy="375" r="2.5"></circle>
+    <circle cx="604" cy="400" r="2.5"></circle>
+  </g>
+
+  
+  <g fill="#FFFFFF" fill-opacity="0.4" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.5">
+    <text x="32" y="40">SJP · CABLE-X</text>
+    <text x="32" y="58" fill-opacity="0.25">DUAL ADJUSTABLE PULLEY</text>
+    <text x="768" y="40" text-anchor="end">SJP-015</text>
+  </g>
+  <text x="32" y="568" fill="#DC1F1F" fill-opacity="0.7" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">◆ HANDMADE · MADRID</text>
+</svg>
