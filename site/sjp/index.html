@@ -222,6 +222,178 @@
   display: flex; align-items: end; justify-content: space-between;
   gap: 40px; margin-bottom: 48px; flex-wrap: wrap;
 }
+
+/* reviews */
+.reviews-section {
+  background: var(--paper);
+  border-top: 1px solid var(--steel-line);
+  border-bottom: 1px solid var(--steel-line);
+}
+.reviews-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.55fr);
+  gap: clamp(32px, 6vw, 80px);
+  align-items: end;
+  margin-bottom: 48px;
+}
+.reviews-head p {
+  max-width: 42ch;
+  color: var(--ink-2);
+}
+.reviews-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 24px;
+  align-items: start;
+}
+.reviews-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.review-card {
+  min-height: 280px;
+  padding: 24px;
+  background: var(--paper-2);
+  border: 1px solid var(--steel-line);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.review-stars {
+  display: flex;
+  gap: 4px;
+  color: var(--red);
+  font-size: 15px;
+  line-height: 1;
+  margin-bottom: 22px;
+}
+.review-card blockquote {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin: 0;
+}
+.review-meta {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--steel-line);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: end;
+}
+.review-meta b {
+  display: block;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.review-meta span,
+.review-product {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--steel);
+}
+.review-form {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 24px;
+  border: 1px solid var(--ink);
+}
+.review-form h3 {
+  font-size: 20px;
+  line-height: 1.05;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.review-form p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--steel-dim);
+  margin-bottom: 20px;
+}
+.review-form-grid {
+  display: grid;
+  gap: 12px;
+}
+.review-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--steel-dim);
+  text-transform: uppercase;
+}
+.review-field input,
+.review-field textarea,
+.review-field select {
+  width: 100%;
+  padding: 12px 13px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: #050505;
+  color: var(--paper);
+  font-family: var(--f-sans);
+  font-size: 13px;
+  outline: none;
+}
+.review-field textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+.review-field input:focus,
+.review-field textarea:focus,
+.review-field select:focus {
+  border-color: var(--paper);
+}
+.review-status {
+  min-height: 18px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--steel-dim);
+}
+.review-status.ok { color: #8bd88b; }
+.review-status.err { color: var(--red); }
+.review-form .btn {
+  width: 100%;
+  justify-content: center;
+}
+@media (max-width: 1020px) {
+  .reviews-head,
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+  .reviews-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .review-form {
+    max-width: 560px;
+  }
+}
+@media (max-width: 640px) {
+  .reviews-head {
+    text-align: center;
+  }
+  .reviews-head p {
+    margin: 0 auto;
+  }
+  .reviews-list {
+    grid-template-columns: 1fr;
+  }
+  .review-card {
+    min-height: 0;
+  }
+  .review-form {
+    padding: 20px;
+  }
+}
 .carousel-head h2 { max-width: 14ch; }
 .carousel-head .right {
   display: flex; align-items: center; gap: 20px;
@@ -691,6 +863,164 @@ function Categories() {
   );
 }
 
+const REVIEW_FALLBACKS = [
+  {
+    id: 'local-1',
+    name: 'Carlos M.',
+    location: 'Sevilla',
+    rating: 5,
+    product: 'Jaula Potencia Musculación',
+    comment: 'Estructura muy seria, soldaduras limpias y cero holguras. La montamos en un box pequeño y se nota hecha para durar.'
+  },
+  {
+    id: 'local-2',
+    name: 'Nerea G.',
+    location: 'Madrid',
+    rating: 5,
+    product: 'Press Banca Plano Pro',
+    comment: 'El banco es estable incluso cargando fuerte. La atención fue directa y el acabado llegó mejor de lo esperado.'
+  },
+  {
+    id: 'local-3',
+    name: 'Álvaro R.',
+    location: 'Huelva',
+    rating: 4,
+    product: 'Polea Alta y Baja Regulable',
+    comment: 'Movimiento suave, buen recorrido y ocupa poco. Me ayudaron a ajustar medidas para mi espacio.'
+  }
+];
+
+function Reviews() {
+  const [reviews, setReviews] = useState(REVIEW_FALLBACKS);
+  const [form, setForm] = useState({ name: '', location: '', rating: '5', product: '', comment: '' });
+  const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState({ type: '', text: '' });
+
+  useEffect(() => {
+    let alive = true;
+    fetch('/api/reviews')
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(data => {
+        if (alive && data.reviews?.length) setReviews(data.reviews);
+      })
+      .catch(() => {});
+    return () => { alive = false; };
+  }, []);
+
+  const set = (k, v) => {
+    setForm(s => ({ ...s, [k]: v }));
+    setStatus({ type: '', text: '' });
+  };
+
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.comment.trim()) {
+      setStatus({ type: 'err', text: 'Nombre y reseña son obligatorios' });
+      return;
+    }
+    setBusy(true);
+    try {
+      const resp = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, rating: Number(form.rating) })
+      });
+      if (!resp.ok) throw new Error('No se pudo guardar');
+      const data = await resp.json();
+      setReviews(rs => [data.review, ...rs.filter(r => r.id !== data.review.id)]);
+      setForm({ name: '', location: '', rating: '5', product: '', comment: '' });
+      setStatus({ type: 'ok', text: 'Reseña publicada' });
+    } catch (_) {
+      const localReview = {
+        id: `local-${Date.now()}`,
+        ...form,
+        rating: Number(form.rating),
+        createdAt: new Date().toISOString()
+      };
+      setReviews(rs => [localReview, ...rs]);
+      setForm({ name: '', location: '', rating: '5', product: '', comment: '' });
+      setStatus({ type: 'ok', text: 'Reseña añadida en este navegador' });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <section className="section reviews-section">
+      <div className="wrap">
+        <div className="reviews-head">
+          <div className="reveal">
+            <div className="eyebrow red" style={{marginBottom: 16}}>◆ 04 · Reseñas reales</div>
+            <h2 className="h-1">Lo que dicen<br/>quienes entrenan fuerte</h2>
+          </div>
+          <p className="body-lg reveal delay-1">
+            Opiniones de clientes sobre fabricación, trato, entrega y sensaciones de uso. También puedes dejar la tuya después de probar una pieza.
+          </p>
+        </div>
+
+        <div className="reviews-grid">
+          <div className="reviews-list reveal delay-1">
+            {reviews.slice(0, 6).map((r, i) => (
+              <article className="review-card" key={r.id || i}>
+                <div>
+                  <div className="review-stars" aria-label={`${r.rating} de 5`}>
+                    {'★'.repeat(Number(r.rating) || 5)}<span style={{color:'var(--steel-line)'}}>{'★'.repeat(5 - (Number(r.rating) || 5))}</span>
+                  </div>
+                  <blockquote>“{r.comment}”</blockquote>
+                </div>
+                <div className="review-meta">
+                  <div>
+                    <b>{r.name}</b>
+                    <span>{r.location || 'Cliente SJP'}</span>
+                  </div>
+                  {r.product && <div className="review-product">{r.product}</div>}
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <form className="review-form reveal delay-2" onSubmit={submit}>
+            <h3>Deja tu reseña</h3>
+            <p>Cuéntanos qué pieza has probado y cómo ha sido la experiencia.</p>
+            <div className="review-form-grid">
+              <div className="review-field">
+                <label>Nombre</label>
+                <input value={form.name} onChange={e => set('name', e.target.value)} maxLength="80" />
+              </div>
+              <div className="review-field">
+                <label>Ciudad</label>
+                <input value={form.location} onChange={e => set('location', e.target.value)} maxLength="80" />
+              </div>
+              <div className="review-field">
+                <label>Valoración</label>
+                <select value={form.rating} onChange={e => set('rating', e.target.value)}>
+                  <option value="5">5 estrellas</option>
+                  <option value="4">4 estrellas</option>
+                  <option value="3">3 estrellas</option>
+                  <option value="2">2 estrellas</option>
+                  <option value="1">1 estrella</option>
+                </select>
+              </div>
+              <div className="review-field">
+                <label>Producto</label>
+                <input value={form.product} onChange={e => set('product', e.target.value)} maxLength="120" placeholder="Ej. Press Banca Plano Pro" />
+              </div>
+              <div className="review-field">
+                <label>Reseña</label>
+                <textarea value={form.comment} onChange={e => set('comment', e.target.value)} maxLength="600" />
+              </div>
+              <div className={`review-status ${status.type}`}>{status.text}</div>
+              <button className="btn btn-red" type="submit" disabled={busy}>
+                {busy ? 'Enviando...' : 'Publicar reseña'} <SJPIcon name="arrow-right" size={14}/>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function GripCTA() {
   return (
     <section className="cta-split">
@@ -876,6 +1206,7 @@ function App() {
       <TrustBar/>
       <Popular/>
       <Categories/>
+      <Reviews/>
       <GripCTA/>
       <SJPMarquee/>
       <Manifesto/>

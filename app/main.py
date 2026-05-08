@@ -37,6 +37,30 @@ INITIAL_PRODUCTS = [
 
 INITIAL_POPULAR = ["sp-001","sp-016","sp-013","sp-014","sp-007","sp-015"]
 
+INITIAL_REVIEWS = [
+    {
+        "name": "Carlos M.",
+        "location": "Sevilla",
+        "rating": 5,
+        "product": "Jaula Potencia Musculación",
+        "comment": "Estructura muy seria, soldaduras limpias y cero holguras. La montamos en un box pequeño y se nota hecha para durar.",
+    },
+    {
+        "name": "Nerea G.",
+        "location": "Madrid",
+        "rating": 5,
+        "product": "Press Banca Plano Pro",
+        "comment": "El banco es estable incluso cargando fuerte. La atención fue directa y el acabado llegó mejor de lo esperado.",
+    },
+    {
+        "name": "Álvaro R.",
+        "location": "Huelva",
+        "rating": 4,
+        "product": "Polea Alta y Baja Regulable",
+        "comment": "Movimiento suave, buen recorrido y ocupa poco. Me ayudaron a ajustar medidas para mi espacio.",
+    },
+]
+
 # ── DB helpers ────────────────────────────────────────────────────────────────
 def get_conn():
     conn = sqlite3.connect(DB_PATH)
@@ -67,6 +91,16 @@ def init_db():
             product_id  TEXT PRIMARY KEY,
             sort_order  INTEGER DEFAULT 0
         );
+        CREATE TABLE IF NOT EXISTS reviews (
+            id          TEXT PRIMARY KEY,
+            name        TEXT NOT NULL,
+            location    TEXT DEFAULT '',
+            rating      INTEGER NOT NULL,
+            product     TEXT DEFAULT '',
+            comment     TEXT NOT NULL,
+            created_at  TEXT NOT NULL,
+            sort_order  INTEGER DEFAULT 0
+        );
     """)
     count = conn.execute("SELECT COUNT(*) FROM products").fetchone()[0]
     if count == 0:
@@ -78,6 +112,15 @@ def init_db():
             )
         for i, pid in enumerate(INITIAL_POPULAR):
             conn.execute("INSERT OR IGNORE INTO popular VALUES (?,?)", (pid, i))
+    review_count = conn.execute("SELECT COUNT(*) FROM reviews").fetchone()[0]
+    if review_count == 0:
+        now = datetime.now(timezone.utc).isoformat()
+        for i, r in enumerate(INITIAL_REVIEWS):
+            conn.execute(
+                "INSERT INTO reviews VALUES (?,?,?,?,?,?,?,?)",
+                (f"rv-seed-{i + 1}", r["name"], r["location"], r["rating"],
+                 r["product"], r["comment"], now, i)
+            )
     conn.commit()
     conn.close()
 
@@ -206,6 +249,67 @@ def _update_popular(conn, product_id: str, featured: bool):
         )
     else:
         conn.execute("DELETE FROM popular WHERE product_id=?", (product_id,))
+
+# ── Reviews ──────────────────────────────────────────────────────────────────
+class ReviewIn(BaseModel):
+    name: str
+    location: str = ""
+    rating: int = 5
+    product: str = ""
+    comment: str
+
+def _read_reviews():
+    conn = get_conn()
+    rows = conn.execute(
+        "SELECT * FROM reviews ORDER BY sort_order DESC, created_at DESC"
+    ).fetchall()
+    conn.close()
+    return [
+        {
+            "id": r["id"],
+            "name": r["name"],
+            "location": r["location"],
+            "rating": r["rating"],
+            "product": r["product"],
+            "comment": r["comment"],
+            "createdAt": r["created_at"],
+        }
+        for r in rows
+    ]
+
+@app.get("/api/reviews")
+def api_get_reviews():
+    return {"reviews": _read_reviews()}
+
+@app.post("/api/reviews")
+def api_create_review(review: ReviewIn):
+    name = review.name.strip()
+    comment = review.comment.strip()
+    if not name or not comment:
+        raise HTTPException(status_code=400, detail="Nombre y reseña son obligatorios.")
+    rating = max(1, min(5, int(review.rating or 5)))
+    conn = get_conn()
+    max_order = conn.execute(
+        "SELECT COALESCE(MAX(sort_order),0) FROM reviews"
+    ).fetchone()[0]
+    review_id = f"rv-{uuid.uuid4().hex[:12]}"
+    created_at = datetime.now(timezone.utc).isoformat()
+    conn.execute(
+        "INSERT INTO reviews VALUES (?,?,?,?,?,?,?,?)",
+        (
+            review_id,
+            name[:80],
+            review.location.strip()[:80],
+            rating,
+            review.product.strip()[:120],
+            comment[:600],
+            created_at,
+            max_order + 1,
+        )
+    )
+    conn.commit()
+    conn.close()
+    return {"ok": True, "review": _read_reviews()[0]}
 
 # ── Upload ────────────────────────────────────────────────────────────────────
 ALLOWED_EXT = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
