@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Soporte técnico — SJP Strength Generation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/styles.css?v=20260504h"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+.sup-hero {
+  background: var(--ink); color: var(--paper);
+  padding: 80px 0 72px;
+}
+.sup-hero h1 {
+  font-size: clamp(48px, 8vw, 108px);
+  font-weight: 800; line-height: 0.9;
+  letter-spacing: -0.02em; text-transform: uppercase;
+}
+.sup-hero h1 em { font-style: normal; color: var(--red); }
+.warranty {
+  padding: clamp(72px, 9vw, 120px) 0;
+}
+.warranty-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--steel-line);
+  border: 1px solid var(--steel-line);
+}
+.w-card {
+  background: var(--paper);
+  padding: 44px 36px;
+  display: flex; flex-direction: column; gap: 16px;
+  min-height: 320px;
+}
+.w-card .tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 6px 12px;
+  background: var(--ink); color: var(--paper);
+  font-family: var(--f-mono); font-size: 10px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  width: fit-content;
+}
+.w-card .years {
+  font-size: 72px; font-weight: 800;
+  line-height: 0.9; letter-spacing: -0.025em;
+}
+.w-card .years .red { color: var(--red); }
+.w-card h3 {
+  font-size: 20px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: -0.005em;
+}
+.w-card p { font-size: 14px; line-height: 1.55; color: var(--ink-2); margin-top: auto; }
+@media (max-width: 880px) { .warranty-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) {
+  .sup-hero { padding: 64px 0 56px; }
+  .sup-hero,
+  .warranty,
+  .faq,
+  .support-form-sec {
+    text-align: center;
+  }
+  .sup-hero p,
+  .warranty .body-lg {
+    max-width: none;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .w-card { padding: 28px 20px; min-height: 0; }
+  .w-card .years { font-size: 56px; }
+}
+
+.faq {
+  padding: clamp(72px, 9vw, 120px) 0;
+  background: var(--paper-2);
+}
+.faq-grid {
+  display: grid; grid-template-columns: 1fr 1.3fr;
+  gap: 80px; align-items: start;
+}
+.faq-item {
+  border-top: 1px solid var(--steel-line);
+  padding: 24px 0;
+  cursor: pointer;
+}
+.faq-item:last-child { border-bottom: 1px solid var(--steel-line); }
+.faq-q {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px;
+  font-size: 17px; font-weight: 600;
+  letter-spacing: -0.005em;
+}
+.faq-a {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s var(--ease-in-out), padding 0.4s;
+  font-size: 14px; line-height: 1.65; color: var(--ink-2);
+}
+.faq-item.open .faq-a { max-height: 240px; padding-top: 16px; }
+.faq-item.open .plus-icon { transform: rotate(45deg); }
+.plus-icon { transition: transform 0.3s var(--ease-out); }
+@media (max-width: 900px) { .faq-grid { grid-template-columns: 1fr; gap: 32px; } }
+@media (max-width: 520px) {
+  .faq-item { padding: 18px 0; }
+  .faq-q { gap: 14px; font-size: 15px; }
+}
+
+.support-form-sec {
+  padding: clamp(72px, 9vw, 120px) 0;
+  background: var(--ink); color: var(--paper);
+}
+.support-form-sec h2 {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800; line-height: 1;
+  letter-spacing: -0.015em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.support-form-sec h2 em { font-style: normal; color: var(--red); }
+.support-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr; gap: 20px;
+  margin-top: 48px;
+}
+.support-form .field.full { grid-column: 1 / -1; }
+.support-form .field label { color: var(--steel); }
+.support-form .field input,
+.support-form .field textarea,
+.support-form .field select {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.12);
+  color: var(--paper);
+}
+.support-form .field input:focus,
+.support-form .field textarea:focus,
+.support-form .field select:focus { border-color: var(--paper); }
+.issue-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+}
+.issue-chip {
+  padding: 16px 12px;
+  border: 1px solid rgba(255,255,255,0.15);
+  font-family: var(--f-mono);
+  font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--steel-dim);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+  display: flex; flex-direction: column; gap: 8px; align-items: center;
+}
+.issue-chip.active {
+  background: var(--red); color: var(--paper); border-color: var(--red);
+}
+.submitted-box {
+  padding: 48px;
+  border: 1px solid rgba(255,255,255,0.15);
+  text-align: center;
+}
+.submitted-box .check {
+  width: 64px; height: 64px; margin: 0 auto 20px;
+  border-radius: 50%; background: var(--red);
+  display: grid; place-items: center;
+}
+@media (max-width: 720px) {
+  .support-form { grid-template-columns: 1fr; }
+  .issue-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
+  .issue-grid { grid-template-columns: 1fr; }
+  .issue-grid { justify-items: center; }
+  .issue-chip { padding: 14px 10px; }
+  .submitted-box { padding: 32px 20px; }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="assets/data.js?v=20260504d"></script>
+<script src="assets/i18n.js?v=20260504d"></script>
+<script src="assets/placeholders.js?v=20260504d"></script>
+<script type="text/babel" src="assets/components.jsx?v=20260504d"></script>
+<script type="text/babel" data-presets="env,react">
+const { useState, useRef } = React;
+
+function Hero() {
+  return (
+    <section className="sup-hero" id="garantia">
+      <div className="wrap">
+        <div className="eyebrow" style={{color:'var(--red)', marginBottom: 24}}>{t('sup.eye')}</div>
+        <h1 className="reveal">{t('sup.t1')}<br/><em>{t('sup.t2')}</em></h1>
+        <p className="body-lg reveal delay-1" style={{color:'var(--steel-dim)', marginTop: 32, maxWidth: '56ch'}}>
+          {t('sup.lede')}
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function Warranty() {
+  const items = window.SJP_LANG === 'en' ? [
+    { y: '10', t: 'Full structure', p: 'Covers any structural failure of frame, welds and anchors. Replacement or repair at no cost, including shipping.' },
+    { y: '5',  t: 'Finish & paint', p: 'Warranty against chipping, corrosion and deterioration of the epoxy finish under normal use.' },
+    { y: '2',  t: 'Pulleys & upholstery', p: 'Wear parts: pulleys, cables, pads and grips. Free replacement during the first 2 years.' }
+  ] : [
+    { y: '10', t: 'Estructura completa', p: 'Cubre cualquier fallo estructural del chasis, soldaduras y anclajes. Sustitución o reparación sin coste, incluyendo envío.' },
+    { y: '5',  t: 'Acabado y pintura', p: 'Garantía contra descascarillado, corrosión y deterioro del acabado epoxi en condiciones de uso normal.' },
+    { y: '2',  t: 'Poleas y tapicería', p: 'Elementos de desgaste: poleas, cables, cojines y agarres. Sustitución gratuita durante los primeros 2 años.' }
+  ];
+  return (
+    <section className="warranty">
+      <div className="wrap">
+        <div style={{display:'flex', justifyContent:'space-between', alignItems:'end', marginBottom: 48, flexWrap:'wrap', gap: 24}}>
+          <div className="reveal">
+            <div className="eyebrow red" style={{marginBottom: 16}}>{t('sup.warEye')}</div>
+            <h2 className="h-1">{t('sup.warT')}</h2>
+          </div>
+          <p className="body-lg reveal delay-1" style={{maxWidth: '38ch'}}>
+            {window.SJP_LANG === 'en' ? 'Because a machine that lasts does not need a short expiration date.' : 'Porque una máquina que dura no necesita fecha de caducidad corta.'}
+          </p>
+        </div>
+        <div className="warranty-grid">
+          {items.map((it, i) => (
+            <div key={it.y} className="w-card reveal" style={{transitionDelay: `${i * 0.06}s`}}>
+              <span className="tag">{window.SJP_LANG === 'en' ? '◆ Years' : '◆ Años'}</span>
+              <div className="years">{it.y}<span className="red">·</span></div>
+              <h3>{it.t}</h3>
+              <p>{it.p}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FAQ() {
+  const [open, setOpen] = useState(0);
+  const faqs = window.SJP_LANG === 'en' ? [
+    { q: 'How do I activate the warranty?', a: 'Just keep the purchase invoice. No registration or forms needed: the warranty is automatic from the delivery date.' },
+    { q: 'What is not covered by the warranty?', a: 'Damage from misuse, unauthorized modifications, rust from outdoor exposure without extra treatment, or impact damage.' }
+  ] : [
+    { q: '¿Cómo activo la garantía?', a: 'Basta con conservar la factura de compra. No necesitas registrarte ni enviar formularios: la garantía es automática desde el día de entrega.' },
+    { q: '¿Qué no cubre la garantía?', a: 'Daños por mal uso, modificaciones no autorizadas, oxidación por exposición a intemperie sin tratamiento adicional o golpes por impacto.' }
+  ];
+  return (
+    <section className="faq">
+      <div className="wrap">
+        <div className="faq-grid">
+          <div>
+            <div className="eyebrow red" style={{marginBottom: 16}}>{t('sup.faqEye')}</div>
+            <h2 className="h-1 reveal">{t('sup.faqT1')}<br/>{t('sup.faqT2')}</h2>
+            <p className="body-lg reveal delay-1" style={{marginTop: 24, maxWidth: '38ch'}}>
+              {t('sup.faqLead')}
+            </p>
+          </div>
+          <div>
+            {faqs.map((f, i) => (
+              <div key={i} className={`faq-item${open === i ? ' open' : ''}`} onClick={() => setOpen(open === i ? -1 : i)}>
+                <div className="faq-q">
+                  <span>{f.q}</span>
+                  <span className="plus-icon"><SJPIcon name="plus" size={18}/></span>
+                </div>
+                <div className="faq-a">{f.a}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SupportForm() {
+  const [form, setForm] = useState({ name:'', email:'', phone:'', product:'', issueType:'', serial:'', message:'' });
+  const [errors, setErrors] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+  const set = (k,v) => setForm(f => ({...f, [k]: v}));
+
+  const issues = (window.SJP_LANG === 'en' ? [
+    { id: 'warranty', icon: 'shield', label: 'Warranty' },
+    { id: 'spare',    icon: 'tool',   label: 'Spare part' },
+    { id: 'question', icon: 'mail',   label: 'Inquiry' }
+  ] : [
+    { id: 'warranty', icon: 'shield', label: 'Garantía' },
+    { id: 'spare',    icon: 'tool',   label: 'Repuesto' },
+    { id: 'question', icon: 'mail',   label: 'Consulta' }
+  ]).filter(i => i.id !== 'install');
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const err = {};
+    if (!form.name.trim()) err.name = true;
+    if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) err.email = true;
+    if (!form.issueType) err.issueType = true;
+    if (!form.message.trim() || form.message.trim().length < 20) err.message = true;
+    setErrors(err);
+    if (Object.keys(err).length === 0) setSubmitted(true);
+  };
+
+  if (submitted) return (
+    <section className="support-form-sec">
+      <div className="wrap">
+        <div className="submitted-box">
+          <div className="check"><SJPIcon name="check" size={28} stroke={2.4}/></div>
+          <h2 style={{marginBottom: 12}}>{t('sup.submitted')}</h2>
+          <p style={{color:'var(--steel-dim)', maxWidth:'46ch', margin:'0 auto'}}>
+            {t('form.thanks')}, {form.name}. {t('sup.thanks')}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+
+  return (
+    <section className="support-form-sec">
+      <div className="wrap">
+        <div className="eyebrow" style={{color:'var(--red)', marginBottom: 20}}>{t('sup.formEye')}</div>
+        <h2 className="reveal">{t('sup.formT1')}<br/><em>{t('sup.formT2')}</em></h2>
+        <p className="body-lg reveal delay-1" style={{color:'var(--steel-dim)', marginTop: 20, maxWidth:'48ch'}}>
+          {t('sup.formLead')}
+        </p>
+
+        <form className="support-form reveal delay-2" onSubmit={onSubmit} noValidate>
+          <div className={`field ${errors.name ? 'error':''}`}>
+            <label>{t('form.name')} *</label>
+            <input value={form.name} onChange={e => set('name', e.target.value)}/>
+            <span className="err-msg">{t('form.required')}</span>
+          </div>
+          <div className={`field ${errors.email ? 'error':''}`}>
+            <label>{t('form.email')} *</label>
+            <input type="email" value={form.email} onChange={e => set('email', e.target.value)}/>
+            <span className="err-msg">{t('form.invalidEmail')}</span>
+          </div>
+          <div className="field">
+            <label>{t('form.phone')}</label>
+            <input value={form.phone} onChange={e => set('phone', e.target.value)}/>
+          </div>
+          <div className="field">
+            <label>{window.SJP_LANG === 'en' ? 'Serial nº (if any)' : 'Nº serie (si aplica)'}</label>
+            <input value={form.serial} onChange={e => set('serial', e.target.value)} placeholder="SJP-XXX-XXXX"/>
+          </div>
+          <div className={`field full ${errors.issueType ? 'error':''}`}>
+            <label>{window.SJP_LANG === 'en' ? 'Issue type' : 'Tipo de incidencia'} *</label>
+            <div className="issue-grid">
+              {issues.map(it => (
+                <div key={it.id} className={`issue-chip${form.issueType === it.id ? ' active' : ''}`}
+                  onClick={() => set('issueType', it.id)}>
+                  <SJPIcon name={it.icon} size={18}/>
+                  <span>{it.label}</span>
+                </div>
+              ))}
+            </div>
+            <span className="err-msg">{t('form.selectOpt')}</span>
+          </div>
+          <div className="field full">
+            <label>{window.SJP_LANG === 'en' ? 'Affected product' : 'Producto afectado'}</label>
+            <select value={form.product} onChange={e => set('product', e.target.value)}>
+              <option value="">{window.SJP_LANG === 'en' ? 'Select…' : 'Selecciona…'}</option>
+              {SJP_PRODUCTS.map(p => {
+                const en = window.SJP_PRODUCTS_EN && window.SJP_PRODUCTS_EN[p.id];
+                const nm = (window.SJP_LANG === 'en' && en) ? en.name : p.name;
+                return <option key={p.id} value={nm}>{nm} ({p.code})</option>;
+              })}
+              <option>{window.SJP_LANG === 'en' ? 'N/A / other' : 'No aplica / otro'}</option>
+            </select>
+          </div>
+          <div className={`field full ${errors.message ? 'error':''}`}>
+            <label>{window.SJP_LANG === 'en' ? 'Message' : 'Mensaje'} * ({window.SJP_LANG === 'en' ? 'min 20 characters' : 'mínimo 20 caracteres'})</label>
+            <textarea rows="5" value={form.message} onChange={e => set('message', e.target.value)}
+              placeholder={window.SJP_LANG === 'en' ? 'Describe what happens, when it started, usage conditions…' : 'Describe qué ocurre, cuándo empezó, qué condiciones de uso…'}/>
+            <span className="err-msg">{t('form.moreDetail')}</span>
+          </div>
+          <div className="field full" style={{marginTop: 16}}>
+            <button type="submit" className="btn btn-red">
+              {window.SJP_LANG === 'en' ? 'Send to workshop' : 'Enviar al taller'} <SJPIcon name="arrow-right" size={14}/>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  );
+}
+
+function App() {
+  const ref = useRef(null);
+  useReveal(ref);
+  useLang();
+  return (
+    <div ref={ref}>
+      <SJPNav active="support"/>
+      <Hero/>
+      <Warranty/>
+      <FAQ/>
+      <SupportForm/>
+      <SJPFooter/>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

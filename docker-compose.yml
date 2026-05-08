@@ -1,0 +1,11 @@
+services:
+  sjp:
+    build: .
+    container_name: sjp
+    restart: unless-stopped
+    ports:
+      - "8099:8000"
+    environment:
+      ADMIN_PASSWORD: "sjp"
+    volumes:
+      - ./data:/data
