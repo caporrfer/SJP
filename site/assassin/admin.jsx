@@ -66,7 +66,7 @@ window.AdminPage = function AdminPage({ lang, content, setContent, products, set
   const Bi = ({ value, onChange, label, area }) => (
     <div className="field">
       <label>{label}</label>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+      <div className="admin-bi-grid">
         <div style={{display:"flex",flexDirection:"column",gap:4}}>
           <span className="admin-bi-tag">ES</span>
           {area
@@ -159,7 +159,7 @@ window.AdminPage = function AdminPage({ lang, content, setContent, products, set
               </div>
               <div className="admin-card">
                 <h3><span><span className="ico">▲</span> {t({es:"RESUMEN",en:"OVERVIEW"})}</span></h3>
-                <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:1,background:"#1F1F1F",border:"1px solid #1F1F1F"}}>
+                <div className="admin-stats-grid">
                   {[
                     {k:t({es:"PRODUCTOS",en:"PRODUCTS"}), v:products.length},
                     {k:t({es:"POPULARES",en:"POPULAR"}), v:products.filter(p=>p.popular).length},
@@ -176,7 +176,7 @@ window.AdminPage = function AdminPage({ lang, content, setContent, products, set
               </div>
               <div className="admin-card">
                 <h3><span><span className="ico">▲</span> {t({es:"ACCIONES RÁPIDAS",en:"QUICK ACTIONS"})}</span></h3>
-                <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:10}}>
+                <div className="admin-actions-grid">
                   <button className="admin-btn primary" onClick={()=>setTab("products")}>+ {t({es:"AÑADIR PRODUCTO",en:"ADD PRODUCT"})}</button>
                   <button className="admin-btn" onClick={()=>setTab("home")}>✎ {t({es:"EDITAR HOME",en:"EDIT HOME"})}</button>
                   <button className="admin-btn" onClick={()=>setTab("contact")}>☎ {t({es:"DATOS CONTACTO",en:"CONTACT INFO"})}</button>
@@ -219,7 +219,7 @@ window.AdminPage = function AdminPage({ lang, content, setContent, products, set
                           setProducts(ps => ps.map(x => x.id===p.id ? {...x, image:url} : x));
                         })} />
                       </label>
-                      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,minWidth:0}}>
+                      <div className="admin-product-fields">
                         <div className="field"><label>CODE</label><input value={p.code} onChange={e=>setProducts(ps=>ps.map(x=>x.id===p.id?{...x,code:e.target.value}:x))} /></div>
                         <div className="field"><label>{t({es:"PRECIO",en:"PRICE"})}</label><input value={p.price} onChange={e=>setProducts(ps=>ps.map(x=>x.id===p.id?{...x,price:e.target.value}:x))} /></div>
                         <div className="field"><label>{t({es:"CATEGORÍA",en:"CATEGORY"})}</label>
@@ -276,7 +276,7 @@ window.AdminPage = function AdminPage({ lang, content, setContent, products, set
               <div className="admin-list">
                 {reviews.map((r,i) => (
                   <div key={i} className="admin-product">
-                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr auto",gap:10,alignItems:"flex-end"}}>
+                    <div className="admin-review-row">
                       <div className="field"><label>{t({es:"NOMBRE",en:"NAME"})}</label><input value={r.name} onChange={e=>setReviews(rs=>rs.map((x,j)=>j===i?{...x,name:e.target.value}:x))} /></div>
                       <div className="field"><label>{t({es:"CIUDAD",en:"CITY"})}</label><input value={r.loc} onChange={e=>setReviews(rs=>rs.map((x,j)=>j===i?{...x,loc:e.target.value}:x))} /></div>
                       <div className="field"><label>{t({es:"VALORACIÓN",en:"RATING"})}</label>
@@ -326,8 +326,8 @@ window.AdminPage = function AdminPage({ lang, content, setContent, products, set
                   </div>
                   <div className="field">
                     <label>{t({es:"IMAGEN HERO",en:"HERO IMAGE"})}</label>
-                    <div style={{display:"flex",gap:10,alignItems:"center"}}>
-                      {content.hero.image && <div style={{width:80,height:80,background:"#0A0A0A",border:"1px solid #1F1F1F",overflow:"hidden"}}><img src={content.hero.image} style={{width:"100%",height:"100%",objectFit:"cover"}} /></div>}
+                    <div className="admin-img-row">
+                      {content.hero.image && <div className="admin-img-preview"><img src={content.hero.image} /></div>}
                       <label className="admin-btn" style={{cursor:"pointer"}}><input type="file" accept="image/*" style={{display:"none"}} onChange={onPickImage(url=>setPath(["hero","image"],url))} />▲ {t({es:"SUBIR IMAGEN",en:"UPLOAD IMAGE"})}</label>
                       {content.hero.image && <button className="admin-btn ghost danger" onClick={()=>setPath(["hero","image"],null)}>× {t({es:"QUITAR",en:"REMOVE"})}</button>}
                     </div>
@@ -338,7 +338,7 @@ window.AdminPage = function AdminPage({ lang, content, setContent, products, set
                 <h3><span><span className="ico">▲</span> {t({es:"BARRA DE PEDIDO (4 PASOS)",en:"ORDER BAR (4 STEPS)"})}</span></h3>
                 <div style={{display:"flex",flexDirection:"column",gap:18}}>
                   {content.order.map((o,idx) => (
-                    <div key={idx} style={{display:"grid",gridTemplateColumns:"80px 1fr 1fr",gap:14,alignItems:"flex-end",paddingBottom:14,borderBottom:idx<content.order.length-1?"1px solid #1F1F1F":"none"}}>
+                    <div key={idx} className="admin-order-row" style={{borderBottom:idx<content.order.length-1?"1px solid #1F1F1F":"none"}}>
                       <div className="field"><label>#</label><input value={o.num} onChange={e=>setPath(["order",idx,"num"], e.target.value)} /></div>
                       <Bi label={t({es:"TÍTULO",en:"TITLE"})} value={o.t} onChange={v=>setPath(["order",idx,"t"],v)} />
                       <Bi label={t({es:"DETALLE",en:"DETAIL"})} value={o.d} onChange={v=>setPath(["order",idx,"d"],v)} />
@@ -373,8 +373,8 @@ window.AdminPage = function AdminPage({ lang, content, setContent, products, set
                   <Bi label={t({es:"TEXTO Nº 3 (garantía)",en:"N3 LABEL (warranty)"})} value={content.story.n3v} onChange={v=>setPath(["story","n3v"],v)} />
                   <div className="field">
                     <label>{t({es:"IMAGEN HISTORIA",en:"STORY IMAGE"})}</label>
-                    <div style={{display:"flex",gap:10,alignItems:"center"}}>
-                      {content.story.image && <div style={{width:80,height:80,background:"#0A0A0A",border:"1px solid #1F1F1F",overflow:"hidden"}}><img src={content.story.image} style={{width:"100%",height:"100%",objectFit:"cover"}} /></div>}
+                    <div className="admin-img-row">
+                      {content.story.image && <div className="admin-img-preview"><img src={content.story.image} /></div>}
                       <label className="admin-btn" style={{cursor:"pointer"}}><input type="file" accept="image/*" style={{display:"none"}} onChange={onPickImage(url=>setPath(["story","image"],url))} />▲ {t({es:"SUBIR",en:"UPLOAD"})}</label>
                       {content.story.image && <button className="admin-btn ghost danger" onClick={()=>setPath(["story","image"],null)}>× {t({es:"QUITAR",en:"REMOVE"})}</button>}
                     </div>
@@ -416,7 +416,7 @@ window.AdminPage = function AdminPage({ lang, content, setContent, products, set
                 <h3><span><span className="ico">▲</span> {t({es:"4 PASOS DEL PROCESO",en:"4 PROCESS STEPS"})}</span></h3>
                 <div style={{display:"flex",flexDirection:"column",gap:18}}>
                   {content.custom.steps.map((s,idx) => (
-                    <div key={idx} style={{display:"flex",flexDirection:"column",gap:10,padding:14,background:"#070707",border:"1px solid #1F1F1F"}}>
+                    <div key={idx} className="admin-step-box">
                       <Bi label={`#${s.n} ${t({es:"TÍTULO",en:"TITLE"})}`} value={s.t} onChange={v=>setPath(["custom","steps",idx,"t"],v)} />
                       <Bi label={t({es:"DETALLE",en:"DETAIL"})} value={s.d} onChange={v=>setPath(["custom","steps",idx,"d"],v)} />
                     </div>

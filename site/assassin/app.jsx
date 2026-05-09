@@ -36,6 +36,31 @@ function App() {
   // Don't show site chrome on admin route
   const isAdmin = route.name === "admin";
 
+  // Fix body/html for admin: dark bg + lock horizontal scroll on mobile
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    if (isAdmin) {
+      body.style.backgroundColor = "#070707";
+      html.style.overflowX = "hidden";
+      body.style.overflowX = "hidden";
+      html.style.position = "relative";
+      html.style.width = "100%";
+      body.style.position = "relative";
+      body.style.width = "100%";
+      body.style.overscrollBehaviorX = "none";
+    } else {
+      body.style.backgroundColor = "";
+      html.style.overflowX = "";
+      body.style.overflowX = "";
+      html.style.position = "";
+      html.style.width = "";
+      body.style.position = "";
+      body.style.width = "";
+      body.style.overscrollBehaviorX = "";
+    }
+  }, [isAdmin]);
+
   return (
     <>
       {!isAdmin && <window.Header lang={lang} setLang={setLang} route={route} content={content} />}
